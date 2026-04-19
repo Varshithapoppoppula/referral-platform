@@ -31,7 +31,7 @@ const httpServer = createServer(app);
 const allowedOrigins = [
   "http://localhost:3000",
   process.env.FRONTEND_URL || "",
-].filter(Boolean);
+].filter(Boolean) as string[];
 
 export const io = new Server(httpServer, {
   cors: {
@@ -43,13 +43,19 @@ export const io = new Server(httpServer, {
 app.use(helmet());
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) callback(null, true);
-      else callback(new Error("Not allowed by CORS"));
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.some((o) => origin.startsWith(o)))
+        return callback(null, true);
+      return callback(new Error("CORS blocked: " + origin));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-user-id"],
+    optionsSuccessStatus: 200,
   }),
 );
+app.options("*", cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
