@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: referral-platform-backend
+    env: node
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: pnpm install && pnpm run build
+    startCommand: node dist/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        fromSecret: SUPABASE_URL
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        fromSecret: SUPABASE_SERVICE_ROLE_KEY
+      - key: SUPABASE_ANON_KEY
+        fromSecret: SUPABASE_ANON_KEY
+      - key: GROQ_API_KEY
+        fromSecret: GROQ_API_KEY
+      - key: FRONTEND_URL
+        fromSecret: FRONTEND_URL
+      - key: EMAIL_USER
+        fromSecret: EMAIL_USER
+      - key: EMAIL_PASS
+        fromSecret: EMAIL_PASS

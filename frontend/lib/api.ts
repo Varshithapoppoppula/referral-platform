@@ -11,6 +11,7 @@ async function getToken(): Promise<string | null> {
 export async function apiGet(path: string) {
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
+    credentials: "include",
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,11 +23,11 @@ export async function apiGet(path: string) {
   return res.json();
 }
 
-// made
 export async function apiPost(path: string, body: any) {
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -44,6 +45,7 @@ export async function apiPatch(path: string, body: any) {
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     method: "PATCH",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -61,6 +63,7 @@ export async function apiDelete(path: string) {
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     method: "DELETE",
+    credentials: "include",
     headers: {
       Authorization: `Bearer ${token}`,
     },
