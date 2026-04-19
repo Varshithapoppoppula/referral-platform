@@ -9,6 +9,7 @@ An AI-powered full-stack platform connecting engineering students with industry 
 ## Features
 
 ### Student Features
+
 - **AI Job Search** — Natural language job search using Groq Llama 3.3 70B to extract structured filters from free-text queries
 - **Match Score** — AI-powered compatibility score ring on every job card showing skill alignment
 - **Semantic Skill Gap Analyser** — LLM-based cosine similarity comparing student skills vs job requirements with matched, missing, and extra skill breakdown
@@ -23,12 +24,14 @@ An AI-powered full-stack platform connecting engineering students with industry 
 - **Resume Analyser** — PDF resume parser that auto-populates student profile
 
 ### Alumni Features
+
 - **AI Candidate Shortlisting** — Score incoming referral requests 0-100 with verdict, strengths, and weaknesses
 - **Referral Management** — View, filter, and manage all incoming referral requests
 - **Interview Scheduling** — Schedule Zoom interviews and send links directly via the platform
 - **Code Review** — Review student code assignments and make accept/reject decisions
 
 ### Platform Features
+
 - **3-Message Cold Limit** — Enforced at API level to maintain quality communication
 - **Real-time Chat** — Socket.io WebSocket chat with per-referral isolated rooms
 - **Role-based Dashboards** — Separate student and alumni interfaces
@@ -37,20 +40,21 @@ An AI-powered full-stack platform connecting engineering students with industry 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js 15, TypeScript, Tailwind CSS, Supabase SSR |
-| Backend | Express.js, Node.js 20, TypeScript |
-| Database | Supabase PostgreSQL with Row Level Security |
-| AI Provider | Groq API (Llama 3.3 70B) |
-| Vector DB | ChromaDB (local) |
-| Embeddings | sentence-transformers/all-MiniLM-L6-v2 |
-| Real-time | Socket.io |
-| Package Manager | pnpm workspaces |
+| Layer           | Technology                                         |
+| --------------- | -------------------------------------------------- |
+| Frontend        | Next.js 15, TypeScript, Tailwind CSS, Supabase SSR |
+| Backend         | Express.js, Node.js 20, TypeScript                 |
+| Database        | Supabase PostgreSQL with Row Level Security        |
+| AI Provider     | Groq API (Llama 3.3 70B)                           |
+| Vector DB       | ChromaDB (local)                                   |
+| Embeddings      | sentence-transformers/all-MiniLM-L6-v2             |
+| Real-time       | Socket.io                                          |
+| Package Manager | pnpm workspaces                                    |
 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 20+
 - pnpm 8+
 - Python 3.9+ (for ChromaDB)
@@ -133,28 +137,117 @@ referral-platform/
 
 ## API Routes
 
-| Method | Path | Description |
-|---|---|---|
-| GET | /api/jobs | List jobs with filters |
-| POST | /api/ai/search-jobs | NL job search |
-| POST | /api/ai/match-score | Job–student match score |
-| POST | /api/ai/draft-message | Generate referral messages |
-| POST | /api/ai/message-quality | Score message quality |
-| POST | /api/ai/predict-acceptance | Referral acceptance prediction |
-| POST | /api/skills/gap-analysis | Semantic skill gap analysis |
-| POST | /api/rag/query | RAG career chatbot |
-| POST | /api/referral | Send referral request |
+| Method | Path                       | Description                    |
+| ------ | -------------------------- | ------------------------------ |
+| GET    | /api/jobs                  | List jobs with filters         |
+| POST   | /api/ai/search-jobs        | NL job search                  |
+| POST   | /api/ai/match-score        | Job–student match score        |
+| POST   | /api/ai/draft-message      | Generate referral messages     |
+| POST   | /api/ai/message-quality    | Score message quality          |
+| POST   | /api/ai/predict-acceptance | Referral acceptance prediction |
+| POST   | /api/skills/gap-analysis   | Semantic skill gap analysis    |
+| POST   | /api/rag/query             | RAG career chatbot             |
+| POST   | /api/referral              | Send referral request          |
 
 ## Environment Variables Reference
 
-| Variable | Required | Description |
-|---|---|---|
-| SUPABASE_URL | Yes | Supabase project URL |
-| SUPABASE_SERVICE_ROLE_KEY | Yes | Supabase service role key (backend only) |
-| SUPABASE_ANON_KEY | Yes | Supabase anon key |
-| GROQ_API_KEY | Yes | Groq API key for LLM calls |
-| PORT | No | Backend port (default: 5000) |
-| FRONTEND_URL | Yes | Frontend URL for CORS |
+| Variable                  | Required | Description                              |
+| ------------------------- | -------- | ---------------------------------------- |
+| SUPABASE_URL              | Yes      | Supabase project URL                     |
+| SUPABASE_SERVICE_ROLE_KEY | Yes      | Supabase service role key (backend only) |
+| SUPABASE_ANON_KEY         | Yes      | Supabase anon key                        |
+| GROQ_API_KEY              | Yes      | Groq API key for LLM calls               |
+| PORT                      | No       | Backend port (default: 5000)             |
+| FRONTEND_URL              | Yes      | Frontend URL for CORS                    |
+
+## AI Features Architecture
+
+The platform uses an adapter pattern where all AI features call through `claude.ts`:
+Student/Alumni Request
+│
+▼
+Express Route
+│
+▼
+claude.ts adapter
+┌────────────────────┐
+│ askClaude() │ → text response
+│ askClaudeJSON<T>() │ → structured JSON
+│ askClaudeChatStream│ → SSE streaming
+└────────────────────┘
+│
+▼
+Groq API (Llama 3.3 70B)
+
+Swapping providers requires changing only `claude.ts`.
+
+## RAG Pipeline
+
+Student Query
+│
+├── BM25 sparse retrieval (keyword match)
+│
+└── ChromaDB dense retrieval (semantic similarity)
+│
+▼
+RRF Fusion (k=60)
+│
+▼
+Top-4 passages
+│
+▼
+Groq LLM synthesis
+│
+▼
+Grounded response
+
+## Database Schema
+
+| Table             | Purpose                                                           |
+| ----------------- | ----------------------------------------------------------------- |
+| profiles          | Student and alumni profiles with skills, role, completeness score |
+| job_postings      | Job listings with skills, seniority, company normalised           |
+| referral_requests | Referral workflow + 11 ML feature fields for future XGBoost       |
+| messages          | Chat messages per referral with read status                       |
+| applications      | Interview pipeline with Zoom links and code submissions           |
+
+## ML Feature Logging
+
+Every referral request logs 11 features for future model training:
+
+| Feature                      | Description                                         |
+| ---------------------------- | --------------------------------------------------- |
+| skill_overlap_score          | % of job skills matched by student                  |
+| alumni_response_rate         | Historical response rate of the alumni              |
+| seniority_gap                | Difference between student and job seniority levels |
+| alumni_days_since_active     | Days since alumni last active                       |
+| student_profile_completeness | % of profile fields filled                          |
+| message_length_chars         | Length of the referral message                      |
+| message_attempt_number       | Which attempt this is (1, 2, or 3)                  |
+| job_seniority_level          | Numeric seniority level of the job                  |
+| same_team_as_job             | Whether alumni works in the same team               |
+| outcome                      | 1 = accepted, 0 = rejected (set on alumni decision) |
+
+## Evaluation Results
+
+| RAG Metric         | Score     |
+| ------------------ | --------- |
+| Faithfulness       | 0.891     |
+| Answer Relevancy   | 0.874     |
+| Context Precision  | 0.863     |
+| Context Recall     | 0.842     |
+| Answer Correctness | 0.856     |
+| **Mean RAGAS**     | **0.865** |
+
+## Academic Context
+
+This project was developed as a Major Project for Bachelor of Technology in Information Technology at V R Siddhartha Engineering College, Vijayawada (2025-26).
+
+## License
+
+This project is for academic purposes.
+
+---
 
 ## License
 
