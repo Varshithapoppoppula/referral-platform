@@ -1,6 +1,10 @@
 import { createClient } from "./supabase/client";
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+const BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
+function assertBase() {
+  if (!BASE) throw new Error("NEXT_PUBLIC_API_URL is not set");
+}
 
 async function getToken(): Promise<string | null> {
   const supabase = createClient();
@@ -9,6 +13,7 @@ async function getToken(): Promise<string | null> {
 }
 
 export async function apiGet(path: string) {
+  assertBase();
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     credentials: "include",
@@ -24,6 +29,7 @@ export async function apiGet(path: string) {
 }
 
 export async function apiPost(path: string, body: any) {
+  assertBase();
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     method: "POST",
@@ -42,6 +48,7 @@ export async function apiPost(path: string, body: any) {
 }
 
 export async function apiPatch(path: string, body: any) {
+  assertBase();
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     method: "PATCH",
@@ -60,6 +67,7 @@ export async function apiPatch(path: string, body: any) {
 }
 
 export async function apiDelete(path: string) {
+  assertBase();
   const token = await getToken();
   const res = await fetch(`${BASE}${path}`, {
     method: "DELETE",
