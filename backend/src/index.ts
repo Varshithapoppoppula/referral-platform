@@ -55,7 +55,7 @@ app.use(
     optionsSuccessStatus: 200,
   }),
 );
-app.options("*", cors());
+app.options("/*", cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
