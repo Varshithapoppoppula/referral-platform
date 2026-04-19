@@ -1,0 +1,582 @@
+[
+  {
+    "id": "g1",
+    "company": "Google",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "arrays",
+    "question": "Given an array of integers and a target sum, return the indices of the two numbers that add up to the target (Two Sum).",
+    "answer": "Use a hash map to store each number's value and index as you iterate. For each element nums[i], check if (target - nums[i]) exists in the map. If it does, return [map[target - nums[i]], i]. Otherwise, add nums[i] to the map. Time: O(n), Space: O(n). This is the classic one-pass hash map approach.",
+    "tags": ["hash-map", "O(n)", "LeetCode-1"]
+  },
+  {
+    "id": "g2",
+    "company": "Google",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "arrays",
+    "question": "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining (Trapping Rain Water).",
+    "answer": "Two-pointer approach: maintain left and right pointers, leftMax and rightMax. If leftMax < rightMax, water at left = leftMax - height[left], move left++. Else water at right = rightMax - height[right], move right--. Time: O(n), Space: O(1). Alternative: precompute leftMax[] and rightMax[] arrays.",
+    "tags": ["two-pointers", "prefix-max", "LeetCode-42"]
+  },
+  {
+    "id": "g3",
+    "company": "Google",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "strings",
+    "question": "Find the longest palindromic substring in a given string.",
+    "answer": "Expand-around-center: for each index i, expand outward for both odd-length (center at i) and even-length (center between i and i+1) palindromes. Track the maximum. Time: O(n²), Space: O(1). Alternative: Manacher's algorithm runs in O(n) but is complex to implement in an interview.",
+    "tags": ["string", "palindrome", "expand-around-center", "LeetCode-5"]
+  },
+  {
+    "id": "g4",
+    "company": "Google",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "trees",
+    "question": "Find the maximum path sum in a binary tree. The path may start and end at any node.",
+    "answer": "DFS with a global maximum. At each node, compute maxGain(node) = node.val + max(0, maxGain(left)) + max(0, maxGain(right)) — this is the candidate for global max. But return node.val + max(0, maxGain(left), maxGain(right)) to the parent (a path through a parent can only pick one child). Update global max during each call. Time: O(n).",
+    "tags": ["DFS", "recursion", "LeetCode-124"]
+  },
+  {
+    "id": "g5",
+    "company": "Google",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "graphs",
+    "question": "Given a list of courses and prerequisites, determine if you can finish all courses (Course Schedule — detect cycle in directed graph).",
+    "answer": "Model as a directed graph. Run DFS cycle detection using 3-state coloring: WHITE (unvisited), GRAY (in current path), BLACK (fully processed). If DFS reaches a GRAY node, a cycle exists → return false. Alternative: Kahn's algorithm (BFS topological sort) — if the topological order contains all nodes, no cycle exists. Time: O(V+E).",
+    "tags": ["topological-sort", "cycle-detection", "DFS", "Kahn", "LeetCode-207"]
+  },
+  {
+    "id": "g6",
+    "company": "Google",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "dynamic-programming",
+    "question": "Given two strings word1 and word2, return the minimum number of operations (insert, delete, replace) to convert word1 to word2 (Edit Distance).",
+    "answer": "DP table dp[i][j] = min edit distance for word1[0..i-1] and word2[0..j-1]. Base cases: dp[i][0] = i, dp[0][j] = j. Transition: if chars match, dp[i][j] = dp[i-1][j-1]. Else dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) for delete, insert, replace. Time: O(m*n), Space: O(m*n), optimizable to O(min(m,n)).",
+    "tags": ["DP", "string", "LeetCode-72"]
+  },
+  {
+    "id": "g7",
+    "company": "Google",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design YouTube — a video streaming platform that serves billions of users.",
+    "answer": "Key components: (1) Upload pipeline: client → upload service → raw storage → transcoding workers (multiple resolutions/formats) → CDN. (2) Metadata DB: video info, thumbnails in SQL/NoSQL. (3) Streaming: adaptive bitrate (HLS/DASH) served from CDN nodes geographically distributed. (4) Recommendations: offline ML pipeline, precomputed feeds. (5) Search: Elasticsearch with inverted index. Scale: blob storage (GCS/S3) for videos, Redis for hot metadata caching, Kafka for async processing events.",
+    "tags": ["CDN", "streaming", "transcoding", "scalability", "distributed-systems"]
+  },
+  {
+    "id": "g8",
+    "company": "Google",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "Tell me about a time you disagreed with your manager or team lead on a technical decision.",
+    "answer": "Use STAR: Situation — describe the disagreement clearly and professionally. Task — explain your role. Action — highlight how you raised the concern with data/evidence, sought other opinions, proposed alternatives, and ultimately respected the decision or escalated appropriately. Result — focus on what you learned and whether the outcome validated your concern. Google values intellectual honesty and psychological safety — show both.",
+    "tags": ["STAR", "conflict-resolution", "leadership", "communication"]
+  },
+  {
+    "id": "ms1",
+    "company": "Microsoft",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "arrays",
+    "question": "Find the maximum subarray sum (Kadane's Algorithm).",
+    "answer": "Iterate through the array, maintaining currentSum and maxSum. At each step: currentSum = max(num, currentSum + num). Update maxSum = max(maxSum, currentSum). If currentSum goes negative, reset it to the current element (fresh start). Time: O(n), Space: O(1). Handle all-negative arrays by initializing maxSum to nums[0].",
+    "tags": ["Kadane", "sliding-window", "LeetCode-53"]
+  },
+  {
+    "id": "ms2",
+    "company": "Microsoft",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "arrays",
+    "question": "Given an array of n+1 integers where each integer is between 1 and n, find the duplicate number without modifying the array and using O(1) extra space.",
+    "answer": "Floyd's cycle detection (tortoise and hare): treat the array as a linked list where index i points to nums[i]. A duplicate creates a cycle. Phase 1: find intersection point (fast moves 2 steps, slow 1 step). Phase 2: move one pointer to start, both move 1 step — they meet at the cycle entrance = duplicate. Time: O(n), Space: O(1). LeetCode-287.",
+    "tags": ["Floyd-cycle", "LeetCode-287", "binary-search-alternative"]
+  },
+  {
+    "id": "ms3",
+    "company": "Microsoft",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "strings",
+    "question": "Determine if a string of brackets '()[]{}' is valid.",
+    "answer": "Use a stack. Iterate the string: if opening bracket, push to stack. If closing bracket, check if stack top matches the corresponding opening bracket — if not or stack is empty, return false. At the end, stack must be empty. Time: O(n), Space: O(n). Edge case: empty string is valid.",
+    "tags": ["stack", "LeetCode-20"]
+  },
+  {
+    "id": "ms4",
+    "company": "Microsoft",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "trees",
+    "question": "Find the lowest common ancestor (LCA) of two nodes in a binary tree.",
+    "answer": "Recursive approach: if root is null or equals p or q, return root. Recurse left and right. If both return non-null, current root is the LCA. If only one side returns non-null, that side contains both p and q — return it. Time: O(n), Space: O(h). For a BST: if both values < root, go left; if both > root, go right; otherwise root is LCA.",
+    "tags": ["DFS", "recursion", "LeetCode-236"]
+  },
+  {
+    "id": "ms5",
+    "company": "Microsoft",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "dynamic-programming",
+    "question": "Given coins of different denominations and a total amount, find the minimum number of coins to make up that amount (Coin Change).",
+    "answer": "Bottom-up DP: dp[i] = min coins to make amount i. Initialize dp[0] = 0, dp[1..amount] = Infinity. For each amount i from 1 to amount, for each coin c: dp[i] = min(dp[i], dp[i - c] + 1). Return dp[amount] if not Infinity, else -1. Time: O(amount * coins), Space: O(amount).",
+    "tags": ["DP", "BFS-alternative", "LeetCode-322"]
+  },
+  {
+    "id": "ms6",
+    "company": "Microsoft",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design a file storage and sync system like OneDrive/Dropbox.",
+    "answer": "Components: (1) Block storage — split files into 4MB chunks, deduplicate using content hash (SHA-256). Store chunks in blob storage (Azure Blob/S3). (2) Metadata service — file tree, chunk manifests, version history in SQL DB. (3) Sync engine — track local changes using file watcher, compute diff at chunk level, upload only changed chunks. (4) Conflict resolution — vector clocks or last-write-wins. (5) API gateway for uploads/downloads. (6) CDN for fast chunk retrieval. Key insight: chunking + deduplication drastically reduces storage and bandwidth.",
+    "tags": ["distributed-storage", "chunking", "deduplication", "sync"]
+  },
+  {
+    "id": "ms7",
+    "company": "Microsoft",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "Tell me about your most challenging technical project.",
+    "answer": "Structure using STAR. Situation: set the context — team size, timeline, complexity. Task: your specific ownership. Action: go deep on technical challenges — architecture decisions, trade-offs made, debugging approaches, how you unblocked the team. Result: quantify impact (latency reduced by X%, feature adopted by Y users, saved $Z). Microsoft values 'growth mindset' — mention what you'd do differently.",
+    "tags": ["STAR", "growth-mindset", "impact", "technical-depth"]
+  },
+  {
+    "id": "amz1",
+    "company": "Amazon",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "arrays",
+    "question": "Rotate an array of n elements to the right by k steps.",
+    "answer": "Reverse approach (O(1) space): (1) Reverse entire array. (2) Reverse first k%n elements. (3) Reverse remaining elements. Example: [1,2,3,4,5], k=2 → reverse all: [5,4,3,2,1] → reverse first 2: [4,5,3,2,1] → reverse last 3: [4,5,1,2,3]. Time: O(n), Space: O(1). Alternative: extra array O(n) space.",
+    "tags": ["array-manipulation", "reverse", "LeetCode-189"]
+  },
+  {
+    "id": "amz2",
+    "company": "Amazon",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "strings",
+    "question": "Find the minimum window substring of string s that contains all characters of string t.",
+    "answer": "Sliding window with two pointers: use a frequency map for t. Expand right pointer, decrement counts in window map; when all required chars are satisfied (formed == required), contract left pointer while maintaining validity, recording minimum window. Time: O(|s| + |t|), Space: O(|s| + |t|). Key: track 'formed' count to avoid scanning the entire map each step. LeetCode-76.",
+    "tags": ["sliding-window", "hash-map", "LeetCode-76"]
+  },
+  {
+    "id": "amz3",
+    "company": "Amazon",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "trees",
+    "question": "Serialize and deserialize a binary tree.",
+    "answer": "BFS serialization: use level-order traversal, encode null children as 'null'. Produce a comma-separated string. Deserialization: split by comma, use a queue. Pop the root value, assign left and right children from the queue (skip 'null' nodes). Time: O(n), Space: O(n). Alternatively, preorder DFS works well too — serialize with a sentinel for null.",
+    "tags": ["BFS", "serialization", "LeetCode-297"]
+  },
+  {
+    "id": "amz4",
+    "company": "Amazon",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "graphs",
+    "question": "Given a 2D grid of '1's (land) and '0's (water), count the number of islands.",
+    "answer": "DFS/BFS flood fill: iterate each cell. When a '1' is found, increment count and DFS/BFS to mark all connected '1's as visited (change to '0' or use a visited set). Time: O(m*n), Space: O(m*n) for recursion stack. Union-Find alternative: union adjacent land cells, count distinct components. LeetCode-200.",
+    "tags": ["DFS", "BFS", "flood-fill", "Union-Find", "LeetCode-200"]
+  },
+  {
+    "id": "amz5",
+    "company": "Amazon",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "dynamic-programming",
+    "question": "Find the length of the longest increasing subsequence (LIS) in an array.",
+    "answer": "O(n log n) approach using patience sorting: maintain a 'tails' array where tails[i] is the smallest tail element for all increasing subsequences of length i+1. For each num, binary search in tails: if num > all tails, append. Else replace the first element in tails >= num. Answer is tails.length. O(n²) DP: dp[i] = max(dp[j] + 1) for all j < i where nums[j] < nums[i]. LeetCode-300.",
+    "tags": ["DP", "binary-search", "patience-sort", "LeetCode-300"]
+  },
+  {
+    "id": "amz6",
+    "company": "Amazon",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design Amazon's product recommendation system.",
+    "answer": "Two approaches: (1) Collaborative filtering — user-item matrix, find similar users/items using cosine similarity. Computed offline via Spark/MapReduce. Stored in Redis for fast lookup. (2) Content-based — product embeddings using product features (category, price, description via NLP). Real-time: event streaming (Kinesis) captures clicks/purchases → feed to feature store → online model scoring. Cold start: fallback to trending/bestsellers. Components: feature store, model serving (SageMaker), A/B testing layer.",
+    "tags": ["ML", "collaborative-filtering", "feature-store", "real-time", "scalability"]
+  },
+  {
+    "id": "amz7",
+    "company": "Amazon",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "Tell me about a time you went above and beyond for a customer or stakeholder. (Customer Obsession LP)",
+    "answer": "STAR structure. Amazon's Customer Obsession is their most important LP. Situation: find an example where a customer pain point wasn't being addressed. Task: explain why you chose to own this beyond your job scope. Action: concrete steps you took proactively — extra research, late nights, working cross-team. Result: measurable impact on customer satisfaction, NPS, or retention. Always tie back to customer outcome, not internal processes.",
+    "tags": ["leadership-principles", "customer-obsession", "STAR", "Amazon-LP"]
+  },
+  {
+    "id": "amz8",
+    "company": "Amazon",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "behavioural",
+    "question": "Tell me about a time you had to make a critical decision with incomplete information. (Bias for Action LP)",
+    "answer": "Amazon values speed over perfection at scale. Structure: Situation — frame the urgency and uncertainty. Task — your decision-making role. Action — explain your framework: what data you had, what you inferred, what reversible vs. irreversible decisions you made (Type 1 vs. Type 2), who you consulted quickly, what assumptions you made explicit. Result — outcome and what you'd refine next time. Show comfort with ambiguity.",
+    "tags": ["bias-for-action", "decision-making", "ambiguity", "Amazon-LP"]
+  },
+  {
+    "id": "fk1",
+    "company": "Flipkart",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "arrays",
+    "question": "Given a collection of intervals, merge all overlapping intervals.",
+    "answer": "Sort intervals by start time. Iterate: if current interval's start <= last merged interval's end, merge (update end to max of both ends). Otherwise add current to result. Time: O(n log n) for sort + O(n) for merge = O(n log n). Space: O(n). LeetCode-56.",
+    "tags": ["sorting", "intervals", "LeetCode-56"]
+  },
+  {
+    "id": "fk2",
+    "company": "Flipkart",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "strings",
+    "question": "Given an array of strings, group all anagrams together.",
+    "answer": "Hash map approach: for each string, sort its characters to get a canonical key (e.g., 'eat' → 'aet'). Group all strings with the same key. Return the map's values. Time: O(n * k log k) where k is max string length. Space: O(n*k). Alternative: use character frequency tuple as key (26-element array). LeetCode-49.",
+    "tags": ["hash-map", "sorting", "anagram", "LeetCode-49"]
+  },
+  {
+    "id": "fk3",
+    "company": "Flipkart",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "trees",
+    "question": "Validate whether a binary tree is a valid Binary Search Tree.",
+    "answer": "DFS with min/max bounds: validateBST(node, min, max). Initially called with (-∞, +∞). At each node, check min < node.val < max. Recurse left with max = node.val, recurse right with min = node.val. Return false if bounds violated or node is null (returns true). Time: O(n), Space: O(h). Common mistake: checking only immediate children instead of propagating bounds.",
+    "tags": ["BST", "DFS", "bounds", "LeetCode-98"]
+  },
+  {
+    "id": "fk4",
+    "company": "Flipkart",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "dynamic-programming",
+    "question": "Given a string s and a dictionary of words, determine if s can be segmented into dictionary words (Word Break).",
+    "answer": "DP: dp[i] = true if s[0..i-1] can be segmented. dp[0] = true (empty string). For each i from 1 to n, for each j from 0 to i: if dp[j] is true and s[j..i-1] is in the word set, set dp[i] = true and break. Return dp[n]. Time: O(n²), Space: O(n). Use a hash set for O(1) word lookups. LeetCode-139.",
+    "tags": ["DP", "trie-alternative", "LeetCode-139"]
+  },
+  {
+    "id": "fk5",
+    "company": "Flipkart",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design Flipkart's search autocomplete / type-ahead feature.",
+    "answer": "Components: (1) Trie data structure with frequency weights for prefix lookup. (2) Offline pipeline: aggregate search logs → compute top-k queries per prefix → store in distributed Trie (ZooKeeper-backed). (3) Online: user types → query prefix tree → return top 5 suggestions with caching (Redis). (4) Personalization layer: blend global results with user-specific history. (5) Spell correction: BK-Tree or edit distance precomputation. Scale: 100M+ queries/day → stateless API servers, consistent hashing for Trie shards.",
+    "tags": ["trie", "caching", "search", "distributed-systems"]
+  },
+  {
+    "id": "fk6",
+    "company": "Flipkart",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "Describe a time you significantly improved an existing process or system.",
+    "answer": "STAR: focus on measurable improvement. Situation: identify the pain point clearly. Task: your ownership of the problem. Action: deep dive into root cause, solution design (consider alternatives), implementation, rollout plan, monitoring. Result: quantify — latency/P99 reduced by X%, deployment time cut from Y hours to Z minutes, support tickets reduced by N%. Flipkart values engineering excellence and ownership of non-functional improvements.",
+    "tags": ["process-improvement", "ownership", "impact", "STAR"]
+  },
+  {
+    "id": "sw1",
+    "company": "Swiggy",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "arrays",
+    "question": "Find all triplets in an array that sum to zero (3Sum).",
+    "answer": "Sort the array first. Fix one element (i), then use two-pointer technique for the remaining pair. Skip duplicates at both the outer loop and inner pointers. Time: O(n²), Space: O(1) ignoring output. LeetCode-15. Edge case: handle arrays with fewer than 3 elements. The sort + two-pointer reduces the naive O(n³) to O(n²).",
+    "tags": ["two-pointers", "sorting", "LeetCode-15"]
+  },
+  {
+    "id": "sw2",
+    "company": "Swiggy",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "graphs",
+    "question": "Find the shortest delivery route from a Swiggy warehouse to multiple restaurants and then to a customer (shortest path in a weighted graph).",
+    "answer": "Dijkstra's algorithm for single-source shortest path on a weighted graph with non-negative edges. Use a min-heap (priority queue) storing (distance, node). Initialize dist[source] = 0, all others = ∞. Extract min, relax edges. Time: O((V+E) log V). For multiple destinations: run Dijkstra once from source. If negative weights exist: Bellman-Ford O(VE). For all-pairs: Floyd-Warshall O(V³).",
+    "tags": ["Dijkstra", "shortest-path", "priority-queue", "weighted-graph"]
+  },
+  {
+    "id": "sw3",
+    "company": "Swiggy",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "dynamic-programming",
+    "question": "Given a set of items with weights and values, and a knapsack capacity, maximize the total value without exceeding capacity (0/1 Knapsack).",
+    "answer": "DP table dp[i][w] = max value using first i items with capacity w. Transition: dp[i][w] = max(dp[i-1][w], dp[i-1][w - weight[i]] + value[i]) if w >= weight[i]. Space-optimize to 1D array, iterate w from right to left. Time: O(n*W), Space: O(W). Note: 0/1 means each item can only be used once (unbounded knapsack iterates left to right).",
+    "tags": ["DP", "knapsack", "space-optimization"]
+  },
+  {
+    "id": "sw4",
+    "company": "Swiggy",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design Swiggy's real-time order tracking system.",
+    "answer": "Components: (1) Location service: delivery partners send GPS pings every 5s via WebSocket/gRPC → location stored in Redis (TTL 30s). (2) Order state machine: Kafka events for state transitions (placed → accepted → picked → delivered). (3) ETA computation: uses road graph + current traffic + historical data (ML model), recomputed every 30s. (4) Push notifications: Firebase for customer updates. (5) Driver assignment: geohash-based proximity search in Redis, assignment algorithm considers load + ETA. Scale: 1M+ concurrent orders → horizontal scaling, Kafka for async, Redis Cluster for geo-lookups.",
+    "tags": ["real-time", "WebSocket", "Kafka", "Redis-geospatial", "location-tracking"]
+  },
+  {
+    "id": "sw5",
+    "company": "Swiggy",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "databases",
+    "question": "Write a SQL query to find the top 5 restaurants by number of orders in the last 30 days.",
+    "answer": "SELECT r.restaurant_id, r.name, COUNT(o.order_id) AS order_count FROM orders o JOIN restaurants r ON o.restaurant_id = r.restaurant_id WHERE o.created_at >= NOW() - INTERVAL '30 days' AND o.status = 'delivered' GROUP BY r.restaurant_id, r.name ORDER BY order_count DESC LIMIT 5; — Ensure index on (created_at, restaurant_id). For very large tables, use a pre-aggregated summary table updated hourly.",
+    "tags": ["SQL", "aggregation", "indexing", "window-functions"]
+  },
+  {
+    "id": "sw6",
+    "company": "Swiggy",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "How do you handle tight deadlines with ambiguous or frequently changing requirements?",
+    "answer": "Key themes: (1) Clarify early — identify the core non-negotiable requirements vs. nice-to-haves. (2) Timebox exploration — spend no more than 20% of available time on discovery. (3) Build iteratively — ship a working MVP first, then iterate. (4) Communicate proactively — surface blockers and scope risks immediately, not at the last day. (5) Post-mortem — document learnings for future planning. Swiggy is a fast-paced startup; show comfort with speed and imperfect information.",
+    "tags": ["agile", "ambiguity", "communication", "startup-mindset"]
+  },
+  {
+    "id": "rp1",
+    "company": "Razorpay",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "arrays",
+    "question": "Find the contiguous subarray with the largest product (Maximum Product Subarray).",
+    "answer": "Track both maxProd and minProd at each step (negative * negative = positive, so minimum can flip to maximum). At each element: newMax = max(num, maxProd*num, minProd*num); newMin = min(num, maxProd*num, minProd*num). Update result = max(result, newMax). Time: O(n), Space: O(1). Handle zeros: they reset both max and min to the current element. LeetCode-152.",
+    "tags": ["DP", "prefix-product", "LeetCode-152"]
+  },
+  {
+    "id": "rp2",
+    "company": "Razorpay",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "strings",
+    "question": "Implement atoi which converts a string to a 32-bit signed integer.",
+    "answer": "Steps: (1) Skip leading whitespace. (2) Capture sign (+ or -). (3) Read digits, building the integer. (4) Stop at non-digit. (5) Clamp to INT_MAX (2147483647) or INT_MIN (-2147483648) on overflow — detect overflow before it happens: if result > (INT_MAX - digit) / 10, clamp. Time: O(n), Space: O(1). LeetCode-8. Handle edge cases: empty string, all whitespace, sign-only.",
+    "tags": ["string-parsing", "overflow", "LeetCode-8"]
+  },
+  {
+    "id": "rp3",
+    "company": "Razorpay",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "dynamic-programming",
+    "question": "Given n balloons, each with a number, burst them in an optimal order to maximize coins (Burst Balloons).",
+    "answer": "Interval DP: dp[l][r] = max coins from bursting all balloons in (l, r). Pad with virtual balloons of value 1 at both ends. For each interval length, try each balloon k as the LAST to burst in (l, r): dp[l][r] = max(dp[l][k] + nums[l]*nums[k]*nums[r] + dp[k][r]). Key insight: think of k as the last burst, not the first. Time: O(n³), Space: O(n²). LeetCode-312.",
+    "tags": ["interval-DP", "LeetCode-312"]
+  },
+  {
+    "id": "rp4",
+    "company": "Razorpay",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design a payment processing gateway that handles UPI, cards, and net banking at scale.",
+    "answer": "Components: (1) API gateway with authentication (OAuth2, HMAC signature validation). (2) Payment orchestrator — route to correct payment processor (NPCI for UPI, Visa/Mastercard for cards). (3) Idempotency layer — unique payment_id check in Redis before processing to prevent duplicate charges. (4) State machine — INITIATED → PROCESSING → SUCCESS/FAILED/REFUNDED — persisted in DB with optimistic locking. (5) Reconciliation service — async job to match transactions with bank statements. (6) Webhook service — notify merchants of payment status. Scale: 10K TPS, ACID transactions for payments, async retries with exponential backoff.",
+    "tags": ["payments", "idempotency", "state-machine", "reconciliation", "fintech"]
+  },
+  {
+    "id": "rp5",
+    "company": "Razorpay",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "databases",
+    "question": "Design a database schema for a payment system that ensures idempotency and supports retries.",
+    "answer": "Key tables: payments(payment_id PK, merchant_id, amount, currency, status, idempotency_key UNIQUE, created_at, updated_at), payment_attempts(attempt_id, payment_id FK, gateway, response_code, attempted_at). Idempotency: merchant sends idempotency_key header; INSERT ... ON CONFLICT (idempotency_key) DO NOTHING, then SELECT to return existing result. Use row-level locking (SELECT FOR UPDATE) during state transitions. Partition payments table by created_at for query performance. Index on (merchant_id, created_at) for merchant dashboard queries.",
+    "tags": ["schema-design", "idempotency", "ACID", "partitioning", "locking"]
+  },
+  {
+    "id": "rp6",
+    "company": "Razorpay",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "How do you ensure code quality when working under pressure in a fintech environment?",
+    "answer": "Key points: (1) Non-negotiables — unit tests for all payment flows, especially edge cases (concurrent requests, timeout handling, partial failures). (2) Code review — even under pressure, a second pair of eyes catches critical bugs. (3) Feature flags — deploy behind a flag, gradually roll out to reduce blast radius. (4) Observability — instrument every payment with logging, metrics, alerting before release. (5) Pre-mortems — for high-risk changes, spend 30 minutes imagining what could go wrong. At Razorpay, a bug in payment code directly impacts merchants' revenue — quality is non-negotiable.",
+    "tags": ["testing", "code-quality", "fintech", "observability", "risk-management"]
+  },
+  {
+    "id": "zo1",
+    "company": "Zomato",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "arrays",
+    "question": "Given an integer array, determine if any value appears at least twice.",
+    "answer": "HashSet approach: iterate the array, for each element check if it's already in the set. If yes, return true. If no, add it. Return false after full iteration. Time: O(n), Space: O(n). Alternative O(1) space: sort array, check adjacent elements — O(n log n). Alternative for bounded values: use array as frequency table. LeetCode-217.",
+    "tags": ["hash-set", "LeetCode-217"]
+  },
+  {
+    "id": "zo2",
+    "company": "Zomato",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "trees",
+    "question": "Insert a key into a BST and delete a key from a BST.",
+    "answer": "Insert: traverse left if key < node.val, right if key > node.val. Insert at null leaf. Delete: find node, then three cases — (1) leaf: just remove. (2) one child: replace with child. (3) two children: find inorder successor (smallest in right subtree), copy its value to current node, delete the successor. Time: O(h) where h is height, O(log n) for balanced BST, O(n) worst case.",
+    "tags": ["BST", "insert", "delete", "LeetCode-450"]
+  },
+  {
+    "id": "zo3",
+    "company": "Zomato",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "dynamic-programming",
+    "question": "Count the number of distinct ways to climb n stairs, taking 1 or 2 steps at a time.",
+    "answer": "This is Fibonacci: ways(n) = ways(n-1) + ways(n-2). Base cases: ways(1) = 1, ways(2) = 2. Iteratively compute: use two variables prev and curr. Time: O(n), Space: O(1). Generalization for k steps: sliding window sum of last k values. LeetCode-70.",
+    "tags": ["DP", "Fibonacci", "LeetCode-70"]
+  },
+  {
+    "id": "zo4",
+    "company": "Zomato",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design Zomato's dynamic surge pricing system for peak hours.",
+    "answer": "Components: (1) Demand signal: real-time order rate per geohash zone (5-min rolling window) via Kafka streams. (2) Supply signal: available delivery partners per zone from location service. (3) Surge calculator: supply/demand ratio → surge multiplier (capped at e.g., 3x). Computed every 60s per zone. (4) Storage: surge multipliers in Redis with 90s TTL, pushed to delivery partner apps. (5) Customer display: surge warning at checkout. (6) Feedback loop: monitor conversion rate drop during surge → auto-reduce if drop >30%. ML model optionally learns optimal multiplier per zone/time.",
+    "tags": ["real-time-analytics", "Kafka-streams", "geo-hashing", "pricing-algorithm"]
+  },
+  {
+    "id": "zo5",
+    "company": "Zomato",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "databases",
+    "question": "Write a SQL query to find all restaurants that have received no orders in the last 7 days.",
+    "answer": "SELECT r.restaurant_id, r.name FROM restaurants r WHERE r.restaurant_id NOT IN ( SELECT DISTINCT restaurant_id FROM orders WHERE created_at >= NOW() - INTERVAL '7 days' ); — Alternative with LEFT JOIN: SELECT r.restaurant_id, r.name FROM restaurants r LEFT JOIN orders o ON r.restaurant_id = o.restaurant_id AND o.created_at >= NOW() - INTERVAL '7 days' WHERE o.order_id IS NULL; — The LEFT JOIN approach is often more performant. Add index on orders(restaurant_id, created_at).",
+    "tags": ["SQL", "NOT-IN", "LEFT-JOIN", "NULL-filtering"]
+  },
+  {
+    "id": "zo6",
+    "company": "Zomato",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "behavioural",
+    "question": "Tell me about a technical decision you made that didn't go as planned. How did you handle it?",
+    "answer": "Key themes: ownership, learning, recovery. Structure: Situation — what was the decision and why it seemed right. Task — your role. Action — how you detected the issue (monitoring/alerts/user reports), how quickly you responded, what rollback or mitigation you executed, how you communicated to stakeholders without blaming others, what root cause analysis you conducted. Result — the fix and what preventive measures you put in place. Zomato values blameless post-mortems and fast recovery.",
+    "tags": ["failure", "ownership", "post-mortem", "STAR", "learning"]
+  },
+  {
+    "id": "pp1",
+    "company": "PhonePe",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "arrays",
+    "question": "Find a peak element in an array where an element is greater than its neighbors.",
+    "answer": "Binary search: if mid > mid+1, peak is in the left half (including mid). Else, peak is in the right half. Continue until left == right. Time: O(log n), Space: O(1). Any peak is acceptable. For 1D: boundary elements are peaks if larger than their single neighbor. For a strictly unimodal array, there's exactly one peak. LeetCode-162.",
+    "tags": ["binary-search", "LeetCode-162"]
+  },
+  {
+    "id": "pp2",
+    "company": "PhonePe",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "graphs",
+    "question": "Detect if a directed graph has a cycle.",
+    "answer": "DFS with 3-color marking: WHITE (0, unvisited), GRAY (1, in current DFS path), BLACK (2, fully processed). If during DFS we encounter a GRAY node, a cycle exists. Time: O(V+E), Space: O(V). Kahn's algorithm alternative: if topological sort cannot include all V nodes (queue empties with remaining nodes), cycle exists. For undirected graphs: simpler — if we visit an already-visited node that's not the direct parent, cycle exists.",
+    "tags": ["DFS", "cycle-detection", "topological-sort", "LeetCode-207"]
+  },
+  {
+    "id": "pp3",
+    "company": "PhonePe",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "dynamic-programming",
+    "question": "Count the number of unique paths from the top-left to bottom-right of an m x n grid, moving only right or down.",
+    "answer": "DP: dp[i][j] = dp[i-1][j] + dp[i][j-1]. Base case: dp[0][j] = dp[i][0] = 1 (only one way to reach any cell in first row/column). Time: O(m*n), Space: O(m*n), optimizable to O(n) using 1D rolling array. Mathematical solution: C(m+n-2, m-1) — choosing m-1 down moves out of m+n-2 total moves. LeetCode-62.",
+    "tags": ["DP", "combinatorics", "LeetCode-62"]
+  },
+  {
+    "id": "pp4",
+    "company": "PhonePe",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "system-design",
+    "question": "Design the UPI payment system that handles 100M+ transactions per day.",
+    "answer": "Components: (1) NPCI integration — VPA resolution service (maps VPA to account via NPCI lookup, cached 24h in Redis). (2) Transaction service — initiates transaction, generates UPI ref ID, calls NPCI PSP. (3) Idempotency — check Bloom filter + DB before processing any transaction. (4) Callback handling — NPCI sends async callback; webhook processor updates transaction state. (5) Ledger service — double-entry bookkeeping in partitioned PostgreSQL. (6) Fraud detection — real-time ML scoring on transaction features (amount, velocity, device fingerprint) via Kafka → Flink → Redis. Scale: 1200 TPS peak, horizontal pod autoscaling, read replicas for balance queries.",
+    "tags": ["UPI", "NPCI", "fintech", "idempotency", "fraud-detection", "high-throughput"]
+  },
+  {
+    "id": "pp5",
+    "company": "PhonePe",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "databases",
+    "question": "How would you handle concurrent transactions in a banking database to prevent double-spend?",
+    "answer": "Key techniques: (1) SELECT FOR UPDATE — acquire row-level exclusive lock on the account row before reading balance, preventing concurrent modifications. (2) Optimistic locking — include version column, UPDATE WHERE version = expectedVersion, retry on conflict. (3) Two-phase commit (2PC) for distributed transactions across banks. (4) Idempotency keys — each transaction request has a unique ID; INSERT OR IGNORE pattern. (5) Event sourcing — append-only ledger, balance is derived from events, inherently conflict-free with CRDT-like approaches. Prefer optimistic locking for high-contention accounts (popular merchant wallets).",
+    "tags": ["ACID", "locking", "optimistic-concurrency", "2PC", "banking", "idempotency"]
+  },
+  {
+    "id": "pp6",
+    "company": "PhonePe",
+    "role": "Senior SDE",
+    "level": "senior",
+    "topic": "behavioural",
+    "question": "Describe a feature or system you built that scaled from thousands to millions of users.",
+    "answer": "STAR with focus on scaling journey. Situation: initial design and its assumptions. Task: own the scaling. Action: cover the progression — profiling to find bottleneck (DB? CPU? network?), solutions applied (read replicas, caching, async processing, sharding), rollout strategy. Result: quantify the scale achieved, latency maintained (e.g., P99 < 200ms at 10x load). Key: mention what design decisions you'd make differently if starting with the million-user scale in mind. PhonePe values engineers who think in orders of magnitude.",
+    "tags": ["scalability", "performance", "architecture-evolution", "impact"]
+  },
+  {
+    "id": "me1",
+    "company": "Meesho",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "arrays",
+    "question": "Find the majority element in an array — the element that appears more than n/2 times.",
+    "answer": "Boyer-Moore Voting Algorithm: maintain a candidate and count. For each element: if count == 0, set candidate = element. If element == candidate, count++. Else count--. The final candidate is the majority element. Verify with a second pass if majority is not guaranteed. Time: O(n), Space: O(1). LeetCode-169.",
+    "tags": ["Boyer-Moore", "voting", "LeetCode-169"]
+  },
+  {
+    "id": "me2",
+    "company": "Meesho",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "strings",
+    "question": "Find the longest common prefix string among an array of strings.",
+    "answer": "Horizontal scan: start with prefix = strs[0]. For each subsequent string, trim the prefix until strs[i].startsWith(prefix). Return prefix. Time: O(S) where S is total characters. Alternative: vertical scan — compare character by character across all strings at index 0, 1, 2... stop when mismatch. Binary search approach: binary search on prefix length. All O(S).",
+    "tags": ["string", "prefix", "LeetCode-14"]
+  },
+  {
+    "id": "me3",
+    "company": "Meesho",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "trees",
+    "question": "Return the level-order (BFS) traversal of a binary tree as a list of lists.",
+    "answer": "BFS with a queue. Initialize queue with root. While queue is not empty: record queue size (current level width), dequeue all nodes of current level, add their values to current level list, enqueue their children. Add current level list to result. Time: O(n), Space: O(n) — the widest level can hold n/2 nodes. LeetCode-102.",
+    "tags": ["BFS", "queue", "level-order", "LeetCode-102"]
+  },
+  {
+    "id": "me4",
+    "company": "Meesho",
+    "role": "SDE II",
+    "level": "mid",
+    "topic": "system-design",
+    "question": "Design Meesho's product catalog system for millions of resellers with custom pricing.",
+    "answer": "Components: (1) Catalog DB: base product table (product_id, name, images, attributes, base_price, category) in PostgreSQL. (2) Reseller pricing: separate reseller_products table (reseller_id, product_id, selling_price, is_listed) — a reseller sets margin on top of base_price. (3) Search: Elasticsearch for full-text + faceted search, synced from DB via Debezium CDC. (4) Image CDN: product images served via CloudFront with S3 origin, WebP conversion. (5) Inventory: real-time stock updates via event streaming. Meesho's unique: millions of small resellers each with their own storefront — multi-tenancy with shared product catalog.",
+    "tags": ["catalog", "multi-tenancy", "Elasticsearch", "CDC", "reseller-model"]
+  },
+  {
+    "id": "me5",
+    "company": "Meesho",
+    "role": "SDE I",
+    "level": "junior",
+    "topic": "behavioural",
+    "question": "Why do you want to work at a startup like Meesho rather than a larger company like Amazon or Flipkart?",
+    "answer": "Key themes: ownership, impact, and learning velocity. Focus on: (1) Ownership — at Meesho you'll own entire features end-to-end, not just a microservice. (2) Impact — decisions you make today are in production next week and affect millions of users. (3) Learning — you'll encounter a wider range of problems (infra, product, data) and grow faster in a compressed timeline. (4) Mission — Meesho's social commerce model empowers small-town entrepreneurs; if this resonates with you, mention it authentically. Avoid: 'less competition to get in' or 'easier to stand out'. Show genuine excitement for the startup environment.",
+    "tags": ["startup", "motivation", "ownership", "culture-fit"]
+  }
+]

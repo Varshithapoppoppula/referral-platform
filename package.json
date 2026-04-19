@@ -1,0 +1,12 @@
+{
+  "name": "referral-platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
+    "frontend": "pnpm --filter frontend dev",
+    "backend": "pnpm --filter backend dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
